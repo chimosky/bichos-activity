@@ -15,7 +15,7 @@ REPRODUCCIÓN:
 	La ooteca tiene un tiempo de incubación de
 	un mes, luego del cual nacen las ninfas.
 
-	El ciclo de vida de la cucarcha se compone
+	El ciclo de vida de la cucaracha se compone
 	de tres fases:
 	    Huevo, Ninfa y Adulto.
 

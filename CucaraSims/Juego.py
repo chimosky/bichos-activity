@@ -10,6 +10,7 @@ import gobject
 import pygame
 import gtk
 import random
+import platform
 
 from pygame.locals import HWSURFACE
 from Cucaracha import Cucaracha
@@ -24,6 +25,7 @@ TIME = 1
 MAX = 15
 BASE_PATH = os.path.dirname(__file__)
 BASE_PATH = os.path.dirname(BASE_PATH)
+OLPC = 'olpc' in platform.platform()
 
 gobject.threads_init()
 
@@ -280,7 +282,8 @@ class CucaraSims(gobject.GObject):
 
         try:
             while self.estado:
-                self.reloj.tick(35)
+                if not OLPC:
+                    self.reloj.tick(35)
                 self.__control_de_poblacion()
                 while gtk.events_pending():
                     gtk.main_iteration()
@@ -303,7 +306,7 @@ class CucaraSims(gobject.GObject):
                 self.ventana_real.blit(pygame.transform.scale(
                     self.ventana, self.resolucionreal), (0, 0))
                 pygame.display.update()
-                pygame.time.wait(3)
+                #pygame.time.wait(3)
         except:
             pass
 
