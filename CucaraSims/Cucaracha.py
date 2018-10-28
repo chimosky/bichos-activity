@@ -6,7 +6,7 @@
 #   Uruguay
 
 import os
-import gobject
+from gi.repository import GObject
 import pygame
 from pygame.sprite import Sprite
 import random
@@ -23,23 +23,23 @@ BASE_PATH = os.path.dirname(__file__)
 INDICE_ROTACION = 5
 
 
-class Cucaracha(Sprite, gobject.GObject):
+class Cucaracha(Sprite, GObject.GObject):
 
     __gsignals__ = {
-    #"new-edad": (gobject.SIGNAL_RUN_LAST,
-    #    gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "muere": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,
-        gobject.TYPE_PYOBJECT)),
-    "muda": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "reproduce": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    #"new-edad": (GObject.SIGNAL_RUN_LAST,
+    #    GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "muere": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT,
+        GObject.TYPE_PYOBJECT)),
+    "muda": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "reproduce": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self, sexo, ancho, alto, TIME):
 
         Sprite.__init__(self)
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.acciones = ["camina", "gira", "quieto"]
         self.sexo = sexo

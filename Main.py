@@ -8,7 +8,7 @@
 import os
 import sys
 import gtk
-import gobject
+from gi.repository import GLib
 
 from EventTraductor.EventTraductor import KeyPressTraduce
 from EventTraductor.EventTraductor import KeyReleaseTraduce
@@ -148,7 +148,7 @@ class Bichos(gtk.Window):
             self.widgetjuego = Escenario()
             self.widgetjuego.connect("new-size", self.__redraw)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_intro, self.widgetjuego)
+            GLib.idle_add(self.__run_intro, self.widgetjuego)
 
         elif valor == 2:
             self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
@@ -159,7 +159,7 @@ class Bichos(gtk.Window):
             escenario.connect("mouse-enter", self.__mouse_enter)
             self.widgetjuego = CucaraSimsWidget(escenario)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_cucarasims, escenario)
+            GLib.idle_add(self.__run_cucarasims, escenario)
 
         elif valor == 3:
             self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))

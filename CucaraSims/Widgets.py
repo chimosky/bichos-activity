@@ -7,7 +7,8 @@
 
 import os
 import gtk
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import pygame
 from pygame.sprite import Sprite
 from JAMediaImagenes.ImagePlayer import ImagePlayer
@@ -134,7 +135,7 @@ class Visor(gtk.DrawingArea):
             self.player = ImagePlayer(self)
         elif 'video' in tipo or 'application/ogg':
             self.player = JAMediaReproductor(self.get_property('window').xid)
-        gobject.idle_add(self.player.load, self.archivo)
+        GLib.idle_add(self.player.load, self.archivo)
 
 
 class Cursor(Sprite):
@@ -297,8 +298,8 @@ class Toolbar(gtk.EventBox):
 class ToolbarEstado(gtk.EventBox):
 
     __gsignals__ = {
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self):
 
@@ -343,8 +344,8 @@ class ToolbarEstado(gtk.EventBox):
 class ControlVolumen(gtk.VolumeButton):
 
     __gsignals__ = {
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self):
 

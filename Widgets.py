@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import gtk
-import gobject
+from gi.repository import GObject
+from gi.repository import gdk
 
 from EventTraductor.EventTraductor import MousemotionTraduce
 from EventTraductor.EventTraductor import Traduce_button_press_event
@@ -12,24 +13,24 @@ from EventTraductor.EventTraductor import Traduce_button_release_event
 class Escenario(gtk.DrawingArea):
 
     __gsignals__ = {
-    "new-size": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "mouse-enter": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN, ))}
+    "new-size": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "mouse-enter": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_BOOLEAN, ))}
 
     def __init__(self):
 
         gtk.DrawingArea.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+        self.modify_bg(gtk.StateType.NORMAL, gdk.color_parse("#000000"))
 
-        self.set_events(gtk.gdk.EXPOSE |
-            #gtk.gdk.KEY_PRESS | gtk.gdk.KEY_RELEASE |
-            #gtk.gdk.KEY_RELEASE_MASK | gtk.gdk.KEY_PRESS_MASK |
-            gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK |
-            gtk.gdk.BUTTON_MOTION_MASK | gtk.gdk.BUTTON_PRESS_MASK |
-            gtk.gdk.BUTTON_RELEASE_MASK | gtk.gdk.LEAVE_NOTIFY_MASK
-            | gtk.gdk.ENTER_NOTIFY_MASK)
+        self.set_events(gdk.EventType.EXPOSE |
+            #gdk.KEY_PRESS | gtk.gdk.KEY_RELEASE |
+            #gdk.KEY_RELEASE_MASK | gdk.KEY_PRESS_MASK |
+            gdk.EventMask.POINTER_MOTION_MASK | gdk.EventMask.POINTER_MOTION_HINT_MASK |
+            gdk.EventMask.BUTTON_MOTION_MASK | gdk.EventMask.BUTTON_PRESS_MASK |
+            gdk.EventMask.BUTTON_RELEASE_MASK | gdk.EventMask.LEAVE_NOTIFY_MASK
+            | gdk.EventMask.ENTER_NOTIFY_MASK)
 
         self.connect("size-allocate", self.__size_request)
         self.connect("expose-event", self.__redraw)

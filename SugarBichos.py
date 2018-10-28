@@ -8,7 +8,8 @@
 import os
 import sys
 import gtk
-import gobject
+from gi.repository import GLib
+from gi.repository import gdk
 
 from EventTraductor.EventTraductor import KeyPressTraduce
 from EventTraductor.EventTraductor import KeyReleaseTraduce
@@ -20,7 +21,7 @@ from CucaraSims.CucaraSims import CucaraSimsWidget
 from CucaraSims.Juego import CucaraSims
 from OjosCompuestos.OjosCompuestos import OjosCompuestos
 
-from sugar.activity.activity import Activity
+from sugar3.activity.activity import Activity
 
 
 class Bichos(Activity):
@@ -62,7 +63,7 @@ class Interfaz(gtk.Plug):
         if self.juego:
             KeyPressTraduce(event)
         else:
-            if gtk.gdk.keyval_name(event.keyval) == "Escape":
+            if gdk.keyval_name(event.keyval) == "Escape":
                 self.widgetjuego.salir()
                 self.switch(False, 1)
         return False
@@ -154,13 +155,13 @@ class Interfaz(gtk.Plug):
         for child in self.get_children():
             self.remove(child)
             child.destroy()
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+        self.modify_bg(gtk.StateType.NORMAL, gdk.color_parse("#000000"))
 
         if valor == 1:
             self.widgetjuego = Escenario()
             self.widgetjuego.connect("new-size", self.__redraw)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_intro, self.widgetjuego)
+            GLib.idle_add(self.__run_intro, self.widgetjuego)
 
         elif valor == 2:
             self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
@@ -171,7 +172,7 @@ class Interfaz(gtk.Plug):
             escenario.connect("mouse-enter", self.__mouse_enter)
             self.widgetjuego = CucaraSimsWidget(escenario)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_cucarasims, escenario)
+            GLib.idle_add(self.__run_cucarasims, escenario)
 
         elif valor == 3:
             self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))

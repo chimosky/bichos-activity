@@ -6,17 +6,18 @@
 #   Uruguay
 
 import os
-import gobject
-import gst
-
+from gi.repository import GObject
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gst
 PR = False
 
 
-class ImagePlayer(gobject.GObject):
+class ImagePlayer(GObject.GObject):
 
     def __init__(self, ventana):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.ventana = ventana
         self.src_path = ""
@@ -63,17 +64,17 @@ class ImagePlayer(gobject.GObject):
             pass
 
 
-class PlayerBin(gobject.GObject):
+class PlayerBin(GObject.GObject):
 
     def __init__(self, ventana_id, width, height):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.ventana_id = ventana_id
         self.player = None
         self.bus = None
 
-        self.player = gst.element_factory_make("playbin2", "player")
+        self.player = Gst.element_factory_make("playbin2", "player")
         self.video_bin = Video_Out(width, height)
         self.player.set_property('video-sink', self.video_bin)
 
@@ -83,11 +84,11 @@ class PlayerBin(gobject.GObject):
         self.bus.connect('sync-message', self.__sync_message)
 
     def __sync_message(self, bus, message):
-        if message.type == gst.MESSAGE_ELEMENT:
+        if message.type == Gst.MESSAGE_ELEMENT:
             if message.structure.get_name() == 'prepare-xwindow-id':
                 message.src.set_xwindow_id(self.ventana_id)
 
-        elif message.type == gst.MESSAGE_ERROR:
+        elif message.type == Gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
             if PR:
                 print "ImagePlayer ERROR:"
@@ -95,7 +96,7 @@ class PlayerBin(gobject.GObject):
                 print "\t%s" % debug
 
     def __play(self):
-        self.player.set_state(gst.STATE_PLAYING)
+        self.player.set_state(Gst.STATE_PLAYING)
 
     def rotar(self, valor):
         self.stop()
@@ -109,7 +110,7 @@ class PlayerBin(gobject.GObject):
         self.video_bin.force_rotation(rot)
 
     def stop(self):
-        self.player.set_state(gst.STATE_NULL)
+        self.player.set_state(Gst.STATE_NULL)
 
     def load(self, uri):
         self.stop()
@@ -124,26 +125,26 @@ class PlayerBin(gobject.GObject):
         return False
 
 
-class Video_Out(gst.Pipeline):
+class Video_Out(Gst.Pipeline):
 
     def __init__(self, width, height):
 
-        gst.Pipeline.__init__(self)
+        Gst.Pipeline.__init__(self)
 
         self.set_name('video_out')
 
-        imagefreeze = gst.element_factory_make('imagefreeze', "imagefreeze")
-        videoconvert = gst.element_factory_make(
+        imagefreeze = Gst.element_factory_make('imagefreeze', "imagefreeze")
+        videoconvert = Gst.element_factory_make(
             'ffmpegcolorspace', 'ffmpegcolorspace')
 
-        videoflip = gst.element_factory_make('videoflip', "videoflip")
-        caps = gst.Caps(
+        videoflip = Gst.element_factory_make('videoflip', "videoflip")
+        caps = Gst.Caps(
             'video/x-raw-rgb,framerate=30/1,width=%s,height=%s' % (
             width, height))
-        filtro = gst.element_factory_make("capsfilter", "filtro")
+        filtro = Gst.element_factory_make("capsfilter", "filtro")
         filtro.set_property("caps", caps)
 
-        ximagesink = gst.element_factory_make('ximagesink', "ximagesink")
+        ximagesink = Gst.element_factory_make('ximagesink', "ximagesink")
         ximagesink.set_property("force-aspect-ratio", True)
 
         self.add(imagefreeze)
@@ -157,7 +158,7 @@ class Video_Out(gst.Pipeline):
         videoflip.link(filtro)
         filtro.link(ximagesink)
 
-        self.ghost_pad = gst.GhostPad(
+        self.ghost_pad = Gst.GhostPad(
             "sink", imagefreeze.get_static_pad("sink"))
 
         self.ghost_pad.set_target(imagefreeze.get_static_pad("sink"))

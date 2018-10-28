@@ -7,7 +7,7 @@
 
 import os
 import gtk
-import gobject
+from gi.repository import GLib
 from PlayerList import PlayerList
 from JAMediaImagenes.ImagePlayer import ImagePlayer
 
@@ -37,7 +37,7 @@ class OjosCompuestos(gtk.HPaned):
         self.show_all()
 
     def __load_imagenes(self, widget):
-        gobject.idle_add(self.__run)
+        GLib.idle_add(self.__run)
 
     def __run(self):
         self.player = ImagePlayer(self.pantalla)
@@ -74,4 +74,4 @@ class Dialog(gtk.Dialog):
         self.vbox.pack_start(label, True, True, 0)
         self.vbox.show_all()
 
-        gobject.timeout_add(3000, self.destroy)
+        GLib.timeout_add(3000, self.destroy)

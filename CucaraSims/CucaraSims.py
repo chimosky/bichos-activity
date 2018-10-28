@@ -7,7 +7,8 @@
 
 import os
 import gtk
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 
 from Widgets import Widget_Leccion
 from Widgets import Toolbar
@@ -19,12 +20,12 @@ BASE_PATH = os.path.dirname(__file__)
 class CucaraSimsWidget(gtk.HPaned):
 
     __gsignals__ = {
-    "exit": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "set-cursor": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "exit": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "set-cursor": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self, escenario):
 
@@ -56,7 +57,7 @@ class CucaraSimsWidget(gtk.HPaned):
         self.cursor_root = False
         self.cursor_tipo = False
 
-        gobject.idle_add(self.__config_cursors)
+        GLib.idle_add(self.__config_cursors)
 
     def __volumen_changed(self, widget, valor):
         self.emit('volumen', valor)
@@ -194,10 +195,10 @@ class CucaraSimsWidget(gtk.HPaned):
 class Derecha(gtk.EventBox):
 
     __gsignals__ = {
-    "lectura": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "select": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    "lectura": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, )),
+    "select": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self):
 
@@ -253,8 +254,8 @@ class Derecha(gtk.EventBox):
 class ButtonImagen(gtk.EventBox):
 
     __gsignals__ = {
-    "select": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+    "select": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, ))}
 
     def __init__(self, tipo):
 

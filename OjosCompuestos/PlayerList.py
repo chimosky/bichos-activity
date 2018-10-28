@@ -6,14 +6,15 @@
 #   Uruguay
 
 import gtk
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 
 
 class PlayerList(gtk.Frame):
 
     __gsignals__ = {
-    "nueva-seleccion": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    "nueva-seleccion": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self):
 
@@ -97,15 +98,15 @@ class PlayerList(gtk.Frame):
 class Lista(gtk.TreeView):
 
     __gsignals__ = {
-    "nueva-seleccion": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    "nueva-seleccion": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self):
 
         gtk.TreeView.__init__(self, gtk.ListStore(
             gtk.gdk.Pixbuf,
-            gobject.TYPE_STRING,
-            gobject.TYPE_STRING))
+            GObject.TYPE_STRING,
+            GObject.TYPE_STRING))
 
         self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
         self.set_property("rules-hint", True)
@@ -137,7 +138,7 @@ class Lista(gtk.TreeView):
         if self.valor_select != valor:
             self.valor_select = valor
 
-            gobject.timeout_add(3, self.__select,
+            GLib.timeout_add(3, self.__select,
                 self.get_model().get_path(_iter))
 
         return True
@@ -189,7 +190,7 @@ class Lista(gtk.TreeView):
 
         self.get_model().append([pixbuf, texto, path])
         elementos.remove(elementos[0])
-        gobject.idle_add(self.__ejecutar_agregar_elemento, elementos)
+        GLib.idle_add(self.__ejecutar_agregar_elemento, elementos)
         return False
 
     def limpiar(self):
@@ -206,7 +207,7 @@ class Lista(gtk.TreeView):
         """
         self.get_toplevel().set_sensitive(False)
         self.permitir_select = False
-        gobject.idle_add(self.__ejecutar_agregar_elemento, elementos)
+        GLib.idle_add(self.__ejecutar_agregar_elemento, elementos)
 
     def seleccionar_siguiente(self, widget=None):
         modelo, _iter = self.get_selection().get_selected()

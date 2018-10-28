@@ -5,36 +5,38 @@
 #   Flavio Danesse <fdanesse@gmail.com>
 #   Uruguay
 
-import gst
-import gobject
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst
+from gi.repository import GObject
+from gi.repository import GLib
+GLib.threads_init()
 
-gobject.threads_init()
 
-
-class JAMedia_Audio_Pipeline(gst.Pipeline):
+class JAMedia_Audio_Pipeline(Gst.Pipeline):
 
     def __init__(self):
 
-        gst.Pipeline.__init__(self)
+        Gst.Pipeline.__init__(self)
 
         self.set_name('jamedia_audio_pipeline')
 
-        convert = gst.element_factory_make("audioconvert", "convert")
-        sink = gst.element_factory_make("autoaudiosink", "sink")
+        convert = Gst.element_factory_make("audioconvert", "convert")
+        sink = Gst.element_factory_make("autoaudiosink", "sink")
 
         self.add(convert)
         self.add(sink)
 
         convert.link(sink)
 
-        self.add_pad(gst.GhostPad("sink", convert.get_static_pad("sink")))
+        self.add_pad(Gst.GhostPad("sink", convert.get_static_pad("sink")))
 
 
-class JAMedia_Video_Pipeline(gst.Pipeline):
+class JAMedia_Video_Pipeline(Gst.Pipeline):
 
     def __init__(self):
 
-        gst.Pipeline.__init__(self)
+        Gst.Pipeline.__init__(self)
 
         self.set_name('jamedia_video_pipeline')
 
@@ -46,12 +48,12 @@ class JAMedia_Video_Pipeline(gst.Pipeline):
             'gamma': 10.0,
             'rotacion': 0}
 
-        convert = gst.element_factory_make('ffmpegcolorspace', 'convert')
-        rate = gst.element_factory_make('videorate', 'rate')
-        videobalance = gst.element_factory_make('videobalance', "videobalance")
-        gamma = gst.element_factory_make('gamma', "gamma")
-        videoflip = gst.element_factory_make('videoflip', "videoflip")
-        pantalla = gst.element_factory_make('xvimagesink', "pantalla")
+        convert = Gst.element_factory_make('ffmpegcolorspace', 'convert')
+        rate = Gst.element_factory_make('videorate', 'rate')
+        videobalance = Gst.element_factory_make('videobalance', "videobalance")
+        gamma = Gst.element_factory_make('gamma', "gamma")
+        videoflip = Gst.element_factory_make('videoflip', "videoflip")
+        pantalla = Gst.element_factory_make('xvimagesink', "pantalla")
         pantalla.set_property("force-aspect-ratio", True)
 
         try:  # FIXME: xo no posee esta propiedad
@@ -73,7 +75,7 @@ class JAMedia_Video_Pipeline(gst.Pipeline):
         gamma.link(videoflip)
         videoflip.link(pantalla)
 
-        self.ghost_pad = gst.GhostPad("sink", convert.get_static_pad("sink"))
+        self.ghost_pad = Gst.GhostPad("sink", convert.get_static_pad("sink"))
         self.ghost_pad.set_target(convert.get_static_pad("sink"))
         self.add_pad(self.ghost_pad)
 

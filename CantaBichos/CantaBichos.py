@@ -3,7 +3,7 @@
 
 import os
 import gtk
-import gobject
+from gi.repository import GLib
 
 from player import Player
 
@@ -39,7 +39,7 @@ class CantaBichos(gtk.Table):
         self.show_all()
 
     def __realize(self, widget):
-        gobject.idle_add(self.__dialog_run)
+        GLib.idle_add(self.__dialog_run)
 
     def __dialog_run(self):
         dialog = Dialog(parent=self.get_toplevel(),
@@ -124,13 +124,13 @@ class Button(gtk.EventBox):
 
     def __size_request(self, widget, event):
         rect = self.get_allocation()
-        gobject.idle_add(self.imagen.set_from_pixbuf,
+        GLib.idle_add(self.imagen.set_from_pixbuf,
             gtk.gdk.pixbuf_new_from_file_at_size(
             self.image_path, rect.width, -1))
 
     def __redraw(self, widget, event):
         rect = self.get_allocation()
-        gobject.idle_add(self.imagen.set_from_pixbuf,
+        GLib.idle_add(self.imagen.set_from_pixbuf,
             gtk.gdk.pixbuf_new_from_file_at_size(
             self.image_path, rect.width, -1))
 
@@ -153,4 +153,4 @@ class Dialog(gtk.Dialog):
         self.vbox.pack_start(label, True, True, 0)
         self.vbox.show_all()
 
-        gobject.timeout_add(3000, self.destroy)
+        GLib.timeout_add(3000, self.destroy)

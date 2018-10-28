@@ -6,7 +6,7 @@
 #   Uruguay
 
 import os
-import gobject
+from gi.repository import GObject
 import pygame
 from pygame.sprite import Sprite
 import random
@@ -16,17 +16,17 @@ from Timer import Timer
 BASE_PATH = os.path.dirname(__file__)
 
 
-class Huevo(Sprite, gobject.GObject):
+class Huevo(Sprite, GObject.GObject):
 
     __gsignals__ = {
-    "nacer": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,
-        gobject.TYPE_PYOBJECT))}
+    "nacer": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT,
+        GObject.TYPE_PYOBJECT))}
 
     def __init__(self, pos, TIME):
 
         Sprite.__init__(self)
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         path = os.path.join(BASE_PATH, "Imagenes", "huevos.png")
         self.imagen = pygame.image.load(path)

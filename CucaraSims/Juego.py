@@ -6,9 +6,10 @@
 #   Uruguay
 
 import os
-import gobject
-import pygame
 import gtk
+from gi.repository import GObject
+from gi.repository import GLib
+import pygame
 import random
 import platform
 
@@ -27,26 +28,26 @@ BASE_PATH = os.path.dirname(__file__)
 BASE_PATH = os.path.dirname(BASE_PATH)
 OLPC = 'olpc' in platform.platform()
 
-gobject.threads_init()
+GLib.threads_init()
 
 
-class CucaraSims(gobject.GObject):
+class CucaraSims(GObject.GObject):
 
     __gsignals__ = {
-    "exit": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "lectura": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "clear-cursor-gtk": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "update": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "puntos": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_INT, ))}
+    "exit": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "lectura": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, )),
+    "clear-cursor-gtk": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "update": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "puntos": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_INT, ))}
 
     def __init__(self):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.RESOLUCION_INICIAL = RESOLUCION_INICIAL
         self.resolucionreal = RESOLUCION_INICIAL
