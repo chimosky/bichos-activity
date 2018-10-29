@@ -67,7 +67,7 @@ class JAMediaReproductor(GObject.GObject):
 
     def __sync_message(self, bus, message):
         if message.type == Gst.MESSAGE_ELEMENT:
-            if message.structure.get_name() == 'prepare-xwindow-id':
+            if message.get_structure().get_name() == 'prepare-xwindow-id':
                 message.src.set_xwindow_id(self.ventana_id)
 
         elif message.type == Gst.MESSAGE_STATE_CHANGED:
