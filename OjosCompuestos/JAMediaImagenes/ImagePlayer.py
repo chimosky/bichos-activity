@@ -10,6 +10,7 @@ from gi.repository import GObject
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
+from gi.repository import Gdk
 
 PR = False
 
@@ -23,7 +24,9 @@ class ImagePlayer(GObject.GObject):
         self.ventana = ventana
         self.src_path = ""
 
-        rect = self.ventana.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.ventana.get_allocated_width()
+        rect.height = self.ventana.get_allocated_height()
         self.width = rect.width
         self.height = rect.height
 
@@ -33,7 +36,9 @@ class ImagePlayer(GObject.GObject):
         self.ventana.connect("expose-event", self.__set_size)
 
     def __set_size(self, widget, event):
-        rect = self.ventana.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.ventana.get_allocated_width()
+        rect.height = self.ventana.get_allocated_height()
         self.width = rect.width
         self.height = rect.height
 

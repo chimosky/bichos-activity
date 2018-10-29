@@ -95,7 +95,7 @@ class Intro(GObject.GObject):
                 pygame.display.update()
                 #pygame.time.wait(3)
         except:
-            pass
+            print 'error'
 
     def salir(self, widget=False):
         self.estado = 0

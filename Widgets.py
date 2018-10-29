@@ -54,14 +54,20 @@ class Escenario(Gtk.DrawingArea):
     def __button_press_event(self, widget, event):
         try:
             if self.get_toplevel().juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 Traduce_button_press_event(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().juego.RESOLUCION_INICIAL)
         except:
             # Para Sugar
             if self.get_toplevel().interfaz.juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 Traduce_button_press_event(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().interfaz.juego.RESOLUCION_INICIAL)
 
         return False
@@ -69,35 +75,51 @@ class Escenario(Gtk.DrawingArea):
     def __button_release_event(self, widget, event):
         try:
             if self.get_toplevel().juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 Traduce_button_release_event(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().juego.RESOLUCION_INICIAL)
         except:
             # Para Sugar
             if self.get_toplevel().interfaz.juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 Traduce_button_release_event(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().interfaz.juego.RESOLUCION_INICIAL)
         return False
 
     def __mouse_motion(self, widget, event):
         try:
             if self.get_toplevel().juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 MousemotionTraduce(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().juego.RESOLUCION_INICIAL)
         except:
             # Para Sugar
             if self.get_toplevel().interfaz.juego:
+                rect = Gdk.Rectangle
+                rect.width = self.get_allocated_width()
+                rect.height = self.get_allocated_height()
                 MousemotionTraduce(event,
-                    self.get_allocation(),
+                    rect,
                     self.get_toplevel().interfaz.juego.RESOLUCION_INICIAL)
         return False
 
     def __size_request(self, widget, event):
-        rect = self.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.get_allocated_width()
+        rect.height = self.get_allocated_height()
         self.emit("new-size", (rect.width, rect.height))
 
     def __redraw(self, widget, event):
-        rect = self.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.get_allocated_width()
+        rect.height = self.get_allocated_height()
         self.emit("new-size", (rect.width, rect.height))

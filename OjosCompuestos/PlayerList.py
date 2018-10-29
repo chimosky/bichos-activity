@@ -10,6 +10,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 
 class PlayerList(Gtk.Frame):
@@ -188,7 +189,7 @@ class Lista(Gtk.TreeView):
             return False
 
         texto, path = elementos[0]
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(path, 140, -1)
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(path, 140, -1)
 
         self.get_model().append([pixbuf, texto, path])
         elementos.remove(elementos[0])

@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 from Widgets import Widget_Leccion
 from Widgets import Toolbar
@@ -66,12 +67,12 @@ class CucaraSimsWidget(Gtk.HPaned):
 
     def __config_cursors(self):
         icono = os.path.join(BASE_PATH, "Imagenes", "jarra.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono, -1, 24)
         self.agua_cursor = Gdk.Cursor(
             Gdk.display_get_default(), pixbuf, 0, 0)
 
         icono = os.path.join(BASE_PATH, "Imagenes", "pan.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono, -1, 24)
         self.alimento_cursor = Gdk.Cursor(
             Gdk.display_get_default(), pixbuf, 0, 0)
 
@@ -206,7 +207,7 @@ class Derecha(Gtk.EventBox):
 
         Gtk.EventBox.__init__(self)
 
-        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(4)
 
         box = Gtk.VBox()

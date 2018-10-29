@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 import pygame
 from pygame.sprite import Sprite
 from JAMediaImagenes.ImagePlayer import ImagePlayer
@@ -51,13 +52,17 @@ class Widget_Leccion(Gtk.Dialog):
         self.vbox.pack_start(self.panel, True, True, 0)
         self.vbox.show_all()
 
-        rect = parent.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.ventana.get_allocated_width()
+        rect.height = self.ventana.get_allocated_height()
         self.set_size_request(rect.width, rect.height)
 
         parent.connect("check-resize", self.__resize)
 
     def __resize(self, parent):
-        rect = parent.get_allocation()
+        rect = Gdk.Rectangle
+        rect.width = self.ventana.get_allocated_width()
+        rect.height = self.ventana.get_allocated_height()
         self.set_size_request(rect.width, rect.height)
 
     def stop(self):
@@ -71,7 +76,7 @@ class Panel(Gtk.HPaned):
 
         Gtk.HPaned.__init__(self)
 
-        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         dirpath = False
         if lectura == "ciclo vital":
@@ -202,7 +207,7 @@ class Toolbar(Gtk.EventBox):
 
         imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "cucaracha2.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono,
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono,
             -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
@@ -222,7 +227,7 @@ class Toolbar(Gtk.EventBox):
 
         imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "huevos.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono,
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono,
             -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
@@ -232,7 +237,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labelootecas = Gtk.Label(" = 0")
-        self.labelootecas.modify_fg(Gtk.STATE_NORMAL,
+        self.labelootecas.modify_fg(Gtk.StateType.NORMAL,
             Gdk.color_parse("#000000"))
         self.labelootecas.show()
         item.add(self.labelootecas)
@@ -240,7 +245,7 @@ class Toolbar(Gtk.EventBox):
 
         imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "jarra.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono, -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
         item = Gtk.ToolItem()
@@ -259,7 +264,7 @@ class Toolbar(Gtk.EventBox):
 
         imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "pan.png")
-        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = GdkPixbuf.Pixbuf.pixbuf_new_from_file_at_size(icono, -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
         item = Gtk.ToolItem()
@@ -310,7 +315,7 @@ class ToolbarEstado(Gtk.EventBox):
         toolbar = Gtk.Toolbar()
 
         self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
-        toolbar.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
+        toolbar.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
