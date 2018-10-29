@@ -6,8 +6,11 @@
 #   Uruguay
 
 import os
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 
 from Widgets import Widget_Leccion
 from Widgets import Toolbar
@@ -16,26 +19,26 @@ from Widgets import ToolbarEstado
 BASE_PATH = os.path.dirname(__file__)
 
 
-class CucaraSimsWidget(gtk.HPaned):
+class CucaraSimsWidget(Gtk.HPaned):
 
     __gsignals__ = {
-    "exit": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "set-cursor": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "exit": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "set-cursor": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self, escenario):
 
-        gtk.HPaned.__init__(self)
+        Gtk.HPaned.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.lecciones = []
 
         self.toolbar = Toolbar()
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.pack_start(self.toolbar, False, False, 0)
         vbox.pack_start(escenario, True, True, 0)
         self.toolbarestado = ToolbarEstado()
@@ -56,21 +59,21 @@ class CucaraSimsWidget(gtk.HPaned):
         self.cursor_root = False
         self.cursor_tipo = False
 
-        gobject.idle_add(self.__config_cursors)
+        GObject.idle_add(self.__config_cursors)
 
     def __volumen_changed(self, widget, valor):
         self.emit('volumen', valor)
 
     def __config_cursors(self):
         icono = os.path.join(BASE_PATH, "Imagenes", "jarra.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
-        self.agua_cursor = gtk.gdk.Cursor(
-            gtk.gdk.display_get_default(), pixbuf, 0, 0)
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        self.agua_cursor = Gdk.Cursor(
+            Gdk.display_get_default(), pixbuf, 0, 0)
 
         icono = os.path.join(BASE_PATH, "Imagenes", "pan.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
-        self.alimento_cursor = gtk.gdk.Cursor(
-            gtk.gdk.display_get_default(), pixbuf, 0, 0)
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        self.alimento_cursor = Gdk.Cursor(
+            Gdk.display_get_default(), pixbuf, 0, 0)
 
         self.cursor_root = self.get_toplevel().get_property(
             "window").get_cursor()
@@ -78,7 +81,7 @@ class CucaraSimsWidget(gtk.HPaned):
 
     def __set_cursor(self, widget, tipo):
         """
-        Cuando el usuario selecciona alimento o agua en la interfaz gtk,
+        Cuando el usuario selecciona alimento o agua en la interfaz Gtk,
         setea el cursor y manda una señal para hacerlo tambien en pygame.
         """
         win = self.get_toplevel().get_property("window")
@@ -103,7 +106,7 @@ class CucaraSimsWidget(gtk.HPaned):
 
     def __run_lectura(self, derecha, lectura):
         """
-        La Interfaz gtk manda abrir una lectura.
+        La Interfaz Gtk manda abrir una lectura.
         """
         if lectura == "salir":
             self.emit("exit")
@@ -126,7 +129,7 @@ class CucaraSimsWidget(gtk.HPaned):
 
     def update(self, juego, _dict):
         """
-        El juego pygame actualiza información en la interfaz gtk.
+        El juego pygame actualiza información en la interfaz Gtk.
         """
         infocucas = " %sH + %sM = %s" % (_dict["hembras"],
             _dict["machos"], _dict["cucas"])
@@ -191,28 +194,28 @@ class CucaraSimsWidget(gtk.HPaned):
         self.derecha.set_puntos(puntos)
 
 
-class Derecha(gtk.EventBox):
+class Derecha(Gtk.EventBox):
 
     __gsignals__ = {
-    "lectura": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "select": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    "lectura": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, )),
+    "select": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self):
 
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(4)
 
-        box = gtk.VBox()
+        box = Gtk.VBox()
 
         l = ["Ciclo Vital", "Muda de Exoesqueleto", "Reproducción",
             "Plaga", "Muerte", "Lectura General"]
 
         for leccion in l:
-            button = gtk.Button(leccion)
+            button = Gtk.Button(leccion)
             box.pack_start(button, False, False, 5)
             button.connect("clicked", self.__emit_lectura)
 
@@ -224,13 +227,13 @@ class Derecha(gtk.EventBox):
         button.connect("select", self.__select_imagen)
         box.pack_start(button, False, False, 5)
 
-        frame = gtk.Frame(" Migraciones: ")
+        frame = Gtk.Frame(" Migraciones: ")
         frame.set_label_align(0.5, 0.5)
-        self.puntos = gtk.Label("0")
+        self.puntos = Gtk.Label("0")
         frame.add(self.puntos)
         box.pack_start(frame, False, False, 5)
 
-        button = gtk.Button("Salir")
+        button = Gtk.Button("Salir")
         box.pack_end(button, False, False, 5)
         button.connect("clicked", self.__emit_lectura)
 
@@ -250,17 +253,17 @@ class Derecha(gtk.EventBox):
         self.puntos.set_text(str(puntos))
 
 
-class ButtonImagen(gtk.EventBox):
+class ButtonImagen(Gtk.EventBox):
 
     __gsignals__ = {
-    "select": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+    "select": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, ))}
 
     def __init__(self, tipo):
 
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(4)
 
         self.tipo = tipo
@@ -271,7 +274,7 @@ class ButtonImagen(gtk.EventBox):
         elif self.tipo == "alimento":
             archivo = "pan.png"
 
-        imagen = gtk.Image()
+        imagen = Gtk.Image()
         path = os.path.join(BASE_PATH, "Imagenes", archivo)
         imagen.set_from_file(path)
 

@@ -7,8 +7,11 @@
 
 import os
 import sys
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 
 from EventTraductor.EventTraductor import KeyPressTraduce
 from EventTraductor.EventTraductor import KeyReleaseTraduce
@@ -21,18 +24,18 @@ from CucaraSims.Juego import CucaraSims
 from OjosCompuestos.OjosCompuestos import OjosCompuestos
 
 
-class Bichos(gtk.Window):
+class Bichos(Gtk.Window):
 
     def __init__(self):
 
-        gtk.Window.__init__(self)
+        Gtk.Window.__init__(self)
 
         self.set_title("Bichos")
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
         #self.set_icon_from_file(os.path.join(BASE, "Iconos", "bichos.svg"))
         self.set_resizable(True)
         self.set_size_request(640, 480)
-        self.set_position(gtk.WIN_POS_CENTER)
+        self.set_position(Gtk.WIN_POS_CENTER)
 
         self.juego = False
         self.widgetjuego = False
@@ -50,7 +53,7 @@ class Bichos(gtk.Window):
         if self.juego:
             KeyPressTraduce(event)
         else:
-            if gtk.gdk.keyval_name(event.keyval) == "Escape":
+            if Gdk.keyval_name(event.keyval) == "Escape":
                 self.widgetjuego.salir()
                 self.switch(False, 1)
         return False
@@ -71,7 +74,7 @@ class Bichos(gtk.Window):
             self.juego.escalar(size)
 
     def __run_intro(self, escenario):
-        xid = escenario.get_property('window').xid
+        xid = escenario.get_property('window').get_xid
         os.putenv('SDL_WINDOWID', str(xid))
         self.juego = Intro()
         self.juego.connect("exit", self.__salir)
@@ -81,7 +84,7 @@ class Bichos(gtk.Window):
         return False
 
     def __run_cucarasims(self, escenario):
-        xid = escenario.get_property('window').xid
+        xid = escenario.get_property('window').get_xid
         os.putenv('SDL_WINDOWID', str(xid))
         self.juego = CucaraSims()
         self.widgetjuego.connect("set-cursor", self.juego.set_cursor)
@@ -98,17 +101,17 @@ class Bichos(gtk.Window):
 
     def __dialog_exit_game(self, widget, juego_name):
         self.juego.pause()
-        dialog = gtk.Dialog(parent=self,
-            buttons=("Salir", gtk.RESPONSE_ACCEPT,
-            "Cancelar", gtk.RESPONSE_CANCEL))
-        dialog.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
-        label = gtk.Label("Salir de %s" % juego_name)
+        dialog = Gtk.Dialog(parent=self,
+            buttons=("Salir", Gtk.RESPONSE_ACCEPT,
+            "Cancelar", Gtk.RESPONSE_CANCEL))
+        dialog.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        label = Gtk.Label("Salir de %s" % juego_name)
         label.show()
         dialog.set_border_width(10)
         dialog.vbox.pack_start(label, True, True, 0)
         resp = dialog.run()
         dialog.destroy()
-        if resp == gtk.RESPONSE_ACCEPT:
+        if resp == Gtk.RESPONSE_ACCEPT:
             self.__run_games(False, "menu")
             return
         self.juego.unpause()
@@ -142,39 +145,39 @@ class Bichos(gtk.Window):
         for child in self.get_children():
             self.remove(child)
             child.destroy()
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
 
         if valor == 1:
             self.widgetjuego = Escenario()
             self.widgetjuego.connect("new-size", self.__redraw)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_intro, self.widgetjuego)
+            GObject.idle_add(self.__run_intro, self.widgetjuego)
 
         elif valor == 2:
-            self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
             escenario = Escenario()
             escenario.modify_bg(
-                gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+                Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
             escenario.connect("new-size", self.__redraw)
             escenario.connect("mouse-enter", self.__mouse_enter)
             self.widgetjuego = CucaraSimsWidget(escenario)
             self.add(self.widgetjuego)
-            gobject.idle_add(self.__run_cucarasims, escenario)
+            GObject.idle_add(self.__run_cucarasims, escenario)
 
         elif valor == 3:
-            self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
             self.widgetjuego = CantaBichos()
             self.add(self.widgetjuego)
 
         elif valor == 4:
-            self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
             escenario = Escenario()
             escenario.modify_bg(
-                gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+                Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
             self.widgetjuego = OjosCompuestos(escenario)
             self.add(self.widgetjuego)
 
 
 if __name__ == "__main__":
     Bichos()
-    gtk.main()
+    Gtk.main()

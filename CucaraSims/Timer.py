@@ -6,18 +6,18 @@
 #   Uruguay
 
 import time
-import gobject
+from gi.repository import GObject
 
 
-class Timer(gobject.GObject):
+class Timer(GObject.GObject):
 
     __gsignals__ = {
-    "new-time": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, ))}
+    "new-time": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, ))}
 
     def __init__(self, demora):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.actualizador = False
         self.init = int(time.time())
@@ -49,10 +49,10 @@ class Timer(gobject.GObject):
 
     def new_handle(self, reset):
         if self.actualizador:
-            gobject.source_remove(self.actualizador)
+            GObject.source_remove(self.actualizador)
             self.actualizador = False
         if reset:
-            self.actualizador = gobject.timeout_add(1000, self.__handle)
+            self.actualizador = GObject.timeout_add(1000, self.__handle)
 
     def salir(self):
         self.new_handle(False)

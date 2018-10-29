@@ -2,23 +2,26 @@
 # -*- coding: utf-8 -*-
 
 import os
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 
 from player import Player
 
 BASE_PATH = os.path.dirname(__file__)
 
 
-class CantaBichos(gtk.Table):
+class CantaBichos(Gtk.Table):
 
     def __init__(self):
 
-        gtk.Table.__init__(self, rows=5, columns=6, homogeneous=True)
+        Gtk.Table.__init__(self, rows=5, columns=6, homogeneous=True)
 
         print "Corriendo Canta Bichos . . ."
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
         self.set_property("column-spacing", 2)
         self.set_property("row-spacing", 2)
         self.set_border_width(2)
@@ -39,7 +42,7 @@ class CantaBichos(gtk.Table):
         self.show_all()
 
     def __realize(self, widget):
-        gobject.idle_add(self.__dialog_run)
+        GObject.idle_add(self.__dialog_run)
 
     def __dialog_run(self):
         dialog = Dialog(parent=self.get_toplevel(),
@@ -59,13 +62,13 @@ class CantaBichos(gtk.Table):
             child.salir()
 
 
-class Button(gtk.EventBox):
+class Button(Gtk.EventBox):
 
     def __init__(self, image_path):
 
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#778899"))
+        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#778899"))
 
         audio = "%s.%s" % (os.path.basename(image_path).split(".")[0], "ogg")
         self.sonido = os.path.join(BASE_PATH, "Sonidos", audio)
@@ -76,11 +79,11 @@ class Button(gtk.EventBox):
         self.nombre = os.path.basename(self.image_path).split(".")[0]
         self.active = False
 
-        boton = gtk.ToolButton()
-        boton.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#778899"))
+        boton = Gtk.ToolButton()
+        boton.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#778899"))
 
-        self.imagen = gtk.Image()
-        self.imagen.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#778899"))
+        self.imagen = Gtk.Image()
+        self.imagen.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#778899"))
         boton.set_icon_widget(self.imagen)
 
         boton.connect("size-allocate", self.__size_request)
@@ -105,9 +108,9 @@ class Button(gtk.EventBox):
             if self.get_parent().get_sounds() < 8:
                 self.active = True
                 self.modify_bg(
-                    gtk.STATE_NORMAL, gtk.gdk.color_parse("#e9b96e"))
+                    Gtk.STATE_NORMAL, Gdk.color_parse("#e9b96e"))
                 self.imagen.modify_bg(
-                    gtk.STATE_NORMAL, gtk.gdk.color_parse("#e9b96e"))
+                    Gtk.STATE_NORMAL, Gdk.color_parse("#e9b96e"))
                 self.player.load(self.sonido)
             else:
                 dialog = Dialog(parent=self.get_toplevel(),
@@ -117,40 +120,40 @@ class Button(gtk.EventBox):
         elif self.active == True:
             self.active = False
             self.modify_bg(
-                gtk.STATE_NORMAL, gtk.gdk.color_parse("#778899"))
+                Gtk.STATE_NORMAL, Gdk.color_parse("#778899"))
             self.imagen.modify_bg(
-                gtk.STATE_NORMAL, gtk.gdk.color_parse("#778899"))
+                Gtk.STATE_NORMAL, Gdk.color_parse("#778899"))
             self.player.stop()
 
     def __size_request(self, widget, event):
         rect = self.get_allocation()
-        gobject.idle_add(self.imagen.set_from_pixbuf,
-            gtk.gdk.pixbuf_new_from_file_at_size(
+        GObject.idle_add(self.imagen.set_from_pixbuf,
+            Gdk.pixbuf_new_from_file_at_size(
             self.image_path, rect.width, -1))
 
     def __redraw(self, widget, event):
         rect = self.get_allocation()
-        gobject.idle_add(self.imagen.set_from_pixbuf,
-            gtk.gdk.pixbuf_new_from_file_at_size(
+        GObject.idle_add(self.imagen.set_from_pixbuf,
+            Gdk.pixbuf_new_from_file_at_size(
             self.image_path, rect.width, -1))
 
     def salir(self):
         self.player.stop()
 
 
-class Dialog(gtk.Dialog):
+class Dialog(Gtk.Dialog):
 
     def __init__(self, parent=None, text=""):
 
-        gtk.Dialog.__init__(self, parent=parent)
+        Gtk.Dialog.__init__(self, parent=parent)
 
         self.set_decorated(False)
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(15)
 
-        label = gtk.Label(text)
+        label = Gtk.Label(text)
 
         self.vbox.pack_start(label, True, True, 0)
         self.vbox.show_all()
 
-        gobject.timeout_add(3000, self.destroy)
+        GObject.timeout_add(3000, self.destroy)

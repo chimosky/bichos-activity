@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import gobject
+from gi.repository import GObject
 import pygame
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 import platform
 
 from pygame.locals import HWSURFACE
@@ -17,20 +19,20 @@ BASE_PATH = os.path.dirname(__file__)
 BASE_PATH = os.path.dirname(BASE_PATH)
 OLPC = 'olpc' in platform.platform()
 
-gobject.threads_init()
+GObject.threads_init()
 
 
-class Intro(gobject.GObject):
+class Intro(GObject.GObject):
 
     __gsignals__ = {
-    "exit": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "go": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+    "exit": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "go": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, ))}
 
     def __init__(self):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.RESOLUCION_INICIAL = RESOLUCION_INICIAL
         self.resolucionreal = RESOLUCION_INICIAL
@@ -75,10 +77,10 @@ class Intro(gobject.GObject):
             while self.estado:
                 if not OLPC:
                     self.reloj.tick(35)
-                while gtk.events_pending():
-                    gtk.main_iteration()
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
                 if len(self.sprites.sprites()) < 5:
-                    gobject.idle_add(self.sprites.add,
+                    GObject.idle_add(self.sprites.add,
                         Bicho(RESOLUCION_INICIAL[0],
                         RESOLUCION_INICIAL[1]))
                 self.sprites.clear(self.ventana, self.escenario)

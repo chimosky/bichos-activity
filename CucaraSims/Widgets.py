@@ -6,8 +6,11 @@
 #   Uruguay
 
 import os
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import Gdk
 import pygame
 from pygame.sprite import Sprite
 from JAMediaImagenes.ImagePlayer import ImagePlayer
@@ -17,7 +20,7 @@ BASE_PATH = os.path.dirname(__file__)
 
 
 def get_separador(draw=False, ancho=0, expand=False):
-    separador = gtk.SeparatorToolItem()
+    separador = Gtk.SeparatorToolItem()
     separador.props.draw = draw
     separador.set_size_request(ancho, -1)
     separador.set_expand(expand)
@@ -33,15 +36,15 @@ def describe_archivo(archivo):
     return retorno
 
 
-class Widget_Leccion(gtk.Dialog):
+class Widget_Leccion(Gtk.Dialog):
 
     def __init__(self, parent=None, lectura=""):
 
-        gtk.Dialog.__init__(self, parent=parent,
-            buttons=("Cerrar", gtk.RESPONSE_ACCEPT))
+        Gtk.Dialog.__init__(self, parent=parent,
+            buttons=("Cerrar", Gtk.RESPONSE_ACCEPT))
 
         self.set_decorated(False)
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(15)
 
         self.panel = Panel(lectura)
@@ -62,13 +65,13 @@ class Widget_Leccion(gtk.Dialog):
             visor.player.stop()
 
 
-class Panel(gtk.HPaned):
+class Panel(Gtk.HPaned):
 
     def __init__(self, lectura):
 
-        gtk.HPaned.__init__(self)
+        Gtk.HPaned.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
 
         dirpath = False
         if lectura == "ciclo vital":
@@ -87,7 +90,7 @@ class Panel(gtk.HPaned):
             dirpath = os.path.join(BASE_PATH, "Lecturas", "Extincion")
 
         self.players = []
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         for archivo in sorted(os.listdir(dirpath)):
             tipo = describe_archivo(os.path.join(dirpath, archivo))
             if 'video' in tipo or 'application/ogg' in tipo or "image" in tipo:
@@ -97,10 +100,10 @@ class Panel(gtk.HPaned):
 
         self.pack1(vbox, resize=True, shrink=True)
 
-        self.lectura = gtk.TextView()
+        self.lectura = Gtk.TextView()
         self.lectura.set_editable(False)
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.POLICY_NEVER, Gtk.POLICY_AUTOMATIC)
         scroll.add(self.lectura)
         self.pack2(scroll, resize=False, shrink=False)
 
@@ -113,13 +116,13 @@ class Panel(gtk.HPaned):
         self.show_all()
 
 
-class Visor(gtk.DrawingArea):
+class Visor(Gtk.DrawingArea):
 
     def __init__(self, archivo):
 
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.archivo = archivo
         self.player = False
@@ -133,8 +136,8 @@ class Visor(gtk.DrawingArea):
         if "image" in tipo:
             self.player = ImagePlayer(self)
         elif 'video' in tipo or 'application/ogg':
-            self.player = JAMediaReproductor(self.get_property('window').xid)
-        gobject.idle_add(self.player.load, self.archivo)
+            self.player = JAMediaReproductor(self.get_property('window').get_xid)
+        GObject.idle_add(self.player.load, self.archivo)
 
 
 class Cursor(Sprite):
@@ -184,99 +187,99 @@ class Alimento(Sprite):
             self.kill()
 
 
-class Toolbar(gtk.EventBox):
+class Toolbar(Gtk.EventBox):
 
     def __init__(self):
 
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
 
-        toolbar = gtk.Toolbar()
+        toolbar = Gtk.Toolbar()
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
-        toolbar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        toolbar.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
-        imagen = gtk.Image()
+        imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "cucaracha2.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono,
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono,
             -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
-        item = gtk.ToolItem()
+        item = Gtk.ToolItem()
         item.add(imagen)
         toolbar.insert(item, -1)
 
-        item = gtk.ToolItem()
-        self.labelcucas = gtk.Label(" 0H + 0M = 0")
-        self.labelcucas.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.labelcucas = Gtk.Label(" 0H + 0M = 0")
+        self.labelcucas.modify_fg(Gtk.StateType.NORMAL,
+            Gdk.color_parse("#000000"))
         self.labelcucas.show()
         item.add(self.labelcucas)
         toolbar.insert(item, -1)
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
-        imagen = gtk.Image()
+        imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "huevos.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono,
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono,
             -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
-        item = gtk.ToolItem()
+        item = Gtk.ToolItem()
         item.add(imagen)
         toolbar.insert(item, -1)
 
-        item = gtk.ToolItem()
-        self.labelootecas = gtk.Label(" = 0")
-        self.labelootecas.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.labelootecas = Gtk.Label(" = 0")
+        self.labelootecas.modify_fg(Gtk.STATE_NORMAL,
+            Gdk.color_parse("#000000"))
         self.labelootecas.show()
         item.add(self.labelootecas)
         toolbar.insert(item, -1)
 
-        imagen = gtk.Image()
+        imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "jarra.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
-        item = gtk.ToolItem()
+        item = Gtk.ToolItem()
         item.add(imagen)
         toolbar.insert(item, -1)
 
-        item = gtk.ToolItem()
-        self.labelagua = gtk.Label(" = 0")
-        self.labelagua.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.labelagua = Gtk.Label(" = 0")
+        self.labelagua.modify_fg(Gtk.StateType.NORMAL,
+            Gdk.color_parse("#000000"))
         self.labelagua.show()
         item.add(self.labelagua)
         toolbar.insert(item, -1)
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
-        imagen = gtk.Image()
+        imagen = Gtk.Image()
         icono = os.path.join(BASE_PATH, "Imagenes", "pan.png")
-        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
+        pixbuf = Gdk.pixbuf_new_from_file_at_size(icono, -1, 24)
         imagen.set_from_pixbuf(pixbuf)
         imagen.show()
-        item = gtk.ToolItem()
+        item = Gtk.ToolItem()
         item.add(imagen)
         toolbar.insert(item, -1)
 
-        item = gtk.ToolItem()
-        self.labelalimento = gtk.Label(" = 0")
-        self.labelalimento.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.labelalimento = Gtk.Label(" = 0")
+        self.labelalimento.modify_fg(Gtk.StateType.NORMAL,
+            Gdk.color_parse("#000000"))
         self.labelalimento.show()
         item.add(self.labelalimento)
         toolbar.insert(item, -1)
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
-        item = gtk.ToolItem()
-        self.labeltiempo = gtk.Label(" Años: 0 Dias: 0 Horas: 0")
-        self.labeltiempo.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.labeltiempo = Gtk.Label(" Años: 0 Dias: 0 Horas: 0")
+        self.labeltiempo.modify_fg(Gtk.StateType.NORMAL,
+            Gdk.color_parse("#000000"))
         self.labeltiempo.show()
         item.add(self.labeltiempo)
         toolbar.insert(item, -1)
@@ -294,34 +297,34 @@ class Toolbar(gtk.EventBox):
         self.labeltiempo.set_text(tiempo)
 
 
-class ToolbarEstado(gtk.EventBox):
+class ToolbarEstado(Gtk.EventBox):
 
     __gsignals__ = {
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self):
 
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
 
-        toolbar = gtk.Toolbar()
+        toolbar = Gtk.Toolbar()
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
-        toolbar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        toolbar.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse("#ffffff"))
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
-        item = gtk.ToolItem()
-        self.label = gtk.Label()
-        self.label.modify_fg(gtk.STATE_NORMAL,
-            gtk.gdk.color_parse("#000000"))
+        item = Gtk.ToolItem()
+        self.label = Gtk.Label()
+        self.label.modify_fg(Gtk.StateType.NORMAL,
+            Gdk.color_parse("#000000"))
         self.label.show()
         item.add(self.label)
         toolbar.insert(item, -1)
 
         toolbar.insert(get_separador(draw=False, ancho=0, expand=True), -1)
 
-        item = gtk.ToolItem()
+        item = Gtk.ToolItem()
         self.volumen = ControlVolumen()
         self.volumen.connect("value-changed", self.__value_changed)
         self.volumen.show()
@@ -340,17 +343,17 @@ class ToolbarEstado(gtk.EventBox):
         self.label.set_text(info)
 
 
-class ControlVolumen(gtk.VolumeButton):
+class ControlVolumen(Gtk.VolumeButton):
 
     __gsignals__ = {
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+    "volumen": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_FLOAT, ))}
 
     def __init__(self):
 
-        gtk.VolumeButton.__init__(self)
+        Gtk.VolumeButton.__init__(self)
 
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.connect("value-changed", self.__value_changed)
         self.show_all()

@@ -1,4 +1,7 @@
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import Gdk
 import pygame
 
 keys = {
@@ -19,7 +22,7 @@ keys = {
 
 
 def KeyPressTraduce(event):
-    nombre = gtk.gdk.keyval_name(event.keyval)
+    nombre = Gdk.keyval_name(event.keyval)
     unic = str.lower(nombre)
     if nombre in keys.keys():
         evt = pygame.event.Event(pygame.KEYDOWN,
@@ -28,7 +31,7 @@ def KeyPressTraduce(event):
 
 
 def KeyReleaseTraduce(event):
-    nombre = gtk.gdk.keyval_name(event.keyval)
+    nombre = Gdk.keyval_name(event.keyval)
     unic = str.lower(nombre)
     if nombre in keys.keys():
         evt = pygame.event.Event(pygame.KEYUP,
@@ -37,12 +40,12 @@ def KeyReleaseTraduce(event):
 
 
 def MousemotionTraduce(event, rect, res):
-    x, y, state = event.window.get_pointer()
+    win, x, y, state = event.window.get_pointer()
     rel = (x, y)
     button_state = [
-        state & gtk.gdk.BUTTON1_MASK and 1 or 0,
-        state & gtk.gdk.BUTTON2_MASK and 1 or 0,
-        state & gtk.gdk.BUTTON3_MASK and 1 or 0,
+        state & Gdk.ModifierType.BUTTON1_MASK and 1 or 0,
+        state & Gdk.ModifierType.BUTTON2_MASK and 1 or 0,
+        state & Gdk.ModifierType.BUTTON3_MASK and 1 or 0,
         ]
 
     px = float(x) * 100.0 / float(rect.width)

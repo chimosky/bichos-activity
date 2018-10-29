@@ -6,9 +6,11 @@
 #   Uruguay
 
 import os
-import gobject
+from gi.repository import GObject
 import pygame
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 import random
 import platform
 
@@ -27,26 +29,26 @@ BASE_PATH = os.path.dirname(__file__)
 BASE_PATH = os.path.dirname(BASE_PATH)
 OLPC = 'olpc' in platform.platform()
 
-gobject.threads_init()
+GObject.threads_init()
 
 
-class CucaraSims(gobject.GObject):
+class CucaraSims(GObject.GObject):
 
     __gsignals__ = {
-    "exit": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "lectura": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "clear-cursor-gtk": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "update": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "puntos": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_INT, ))}
+    "exit": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "lectura": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_STRING, )),
+    "clear-cursor-gtk": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, []),
+    "update": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT, )),
+    "puntos": (GObject.SIGNAL_RUN_LAST,
+        GObject.TYPE_NONE, (GObject.TYPE_INT, ))}
 
     def __init__(self):
 
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self.RESOLUCION_INICIAL = RESOLUCION_INICIAL
         self.resolucionreal = RESOLUCION_INICIAL
@@ -244,7 +246,7 @@ class CucaraSims(gobject.GObject):
 
     def set_cursor(self, widget, tipo):
         """
-        Cuando el usuario selecciona alimento o agua en la interfaz gtk,
+        Cuando el usuario selecciona alimento o agua en la interfaz Gtk,
         se setea el cursor tambien en pygame, esto tambien sucede cuando el
         mouse entra o sale del drawing donde dibuja pygame.
         """
@@ -285,8 +287,8 @@ class CucaraSims(gobject.GObject):
                 if not OLPC:
                     self.reloj.tick(35)
                 self.__control_de_poblacion()
-                while gtk.events_pending():
-                    gtk.main_iteration()
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
                 self.huevos.clear(self.ventana, self.escenario)
                 self.alimentos.clear(self.ventana, self.escenario)
                 self.muertas.clear(self.ventana, self.escenario)
