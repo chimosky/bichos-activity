@@ -34,7 +34,7 @@ class CucaraSimsWidget(Gtk.HPaned):
 
         Gtk.HPaned.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.lecciones = []
 
@@ -207,7 +207,7 @@ class Derecha(Gtk.EventBox):
 
         Gtk.EventBox.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(4)
 
         box = Gtk.VBox()
@@ -264,7 +264,7 @@ class ButtonImagen(Gtk.EventBox):
 
         Gtk.EventBox.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(4)
 
         self.tipo = tipo

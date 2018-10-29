@@ -22,7 +22,7 @@ class CantaBichos(Gtk.Table):
 
         print "Corriendo Canta Bichos . . ."
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_property("column-spacing", 2)
         self.set_property("row-spacing", 2)
         self.set_border_width(2)
@@ -69,7 +69,7 @@ class Button(Gtk.EventBox):
 
         Gtk.EventBox.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#778899"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#778899"))
 
         audio = "%s.%s" % (os.path.basename(image_path).split(".")[0], "ogg")
         self.sonido = os.path.join(BASE_PATH, "Sonidos", audio)
@@ -81,10 +81,10 @@ class Button(Gtk.EventBox):
         self.active = False
 
         boton = Gtk.ToolButton()
-        boton.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#778899"))
+        boton.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#778899"))
 
         self.imagen = Gtk.Image()
-        self.imagen.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#778899"))
+        self.imagen.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#778899"))
         boton.set_icon_widget(self.imagen)
 
         boton.connect("size-allocate", self.__size_request)
@@ -109,9 +109,9 @@ class Button(Gtk.EventBox):
             if self.get_parent().get_sounds() < 8:
                 self.active = True
                 self.modify_bg(
-                    Gtk.StateType.NORMAL, Gdk.color_parse("#e9b96e"))
+                    Gtk.StateFlags.NORMAL, Gdk.color_parse("#e9b96e"))
                 self.imagen.modify_bg(
-                    Gtk.StateType.NORMAL, Gdk.color_parse("#e9b96e"))
+                    Gtk.StateFlags.NORMAL, Gdk.color_parse("#e9b96e"))
                 self.player.load(self.sonido)
             else:
                 dialog = Dialog(parent=self.get_toplevel(),
@@ -121,9 +121,9 @@ class Button(Gtk.EventBox):
         elif self.active == True:
             self.active = False
             self.modify_bg(
-                Gtk.StateType.NORMAL, Gdk.color_parse("#778899"))
+                Gtk.StateFlags.NORMAL, Gdk.color_parse("#778899"))
             self.imagen.modify_bg(
-                Gtk.StateType.NORMAL, Gdk.color_parse("#778899"))
+                Gtk.StateFlags.NORMAL, Gdk.color_parse("#778899"))
             self.player.stop()
 
     def __size_request(self, widget, event):
@@ -153,7 +153,7 @@ class Dialog(Gtk.Dialog):
         Gtk.Dialog.__init__(self, parent=parent)
 
         self.set_decorated(False)
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(15)
 
         label = Gtk.Label(text)

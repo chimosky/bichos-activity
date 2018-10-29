@@ -25,7 +25,7 @@ class OjosCompuestos(Gtk.HPaned):
 
         print "Corriendo Ojos Compuestos . . ."
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.player = False
         self.pantalla = pantalla
@@ -69,7 +69,7 @@ class Dialog(Gtk.Dialog):
         Gtk.Dialog.__init__(self, parent=parent)
 
         self.set_decorated(False)
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(15)
 
         label = Gtk.Label(text)

@@ -23,7 +23,7 @@ class PlayerList(Gtk.Frame):
 
         Gtk.Frame.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         vbox = Gtk.VBox()
         self.lista = Lista()
@@ -111,7 +111,7 @@ class Lista(Gtk.TreeView):
             GObject.TYPE_STRING,
             GObject.TYPE_STRING))
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_property("rules-hint", True)
         self.set_headers_clickable(False)
         self.set_headers_visible(False)

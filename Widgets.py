@@ -24,7 +24,7 @@ class Escenario(Gtk.DrawingArea):
 
         Gtk.DrawingArea.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#000000"))
 
         self.set_events(Gdk.EventType.EXPOSE |
             #Gdk.KEY_PRESS | Gdk.KEY_RELEASE |

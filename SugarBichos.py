@@ -116,7 +116,7 @@ class Interfaz(Gtk.Plug):
         dialog = Gtk.Dialog(parent=self,
             buttons=("Salir", Gtk.RESPONSE_ACCEPT,
             "Cancelar", Gtk.RESPONSE_CANCEL))
-        dialog.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        dialog.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         label = Gtk.Label("Salir de %s" % juego_name)
         label.show()
         dialog.set_border_width(10)
@@ -157,7 +157,7 @@ class Interfaz(Gtk.Plug):
         for child in self.get_children():
             self.remove(child)
             child.destroy()
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#000000"))
 
         if valor == 1:
             self.widgetjuego = Escenario()
@@ -166,10 +166,10 @@ class Interfaz(Gtk.Plug):
             GObject.idle_add(self.__run_intro, self.widgetjuego)
 
         elif valor == 2:
-            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
             escenario = Escenario()
             escenario.modify_bg(
-                Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
+                Gtk.StateFlags.NORMAL, Gdk.color_parse("#000000"))
             escenario.connect("new-size", self.__redraw)
             escenario.connect("mouse-enter", self.__mouse_enter)
             self.widgetjuego = CucaraSimsWidget(escenario)
@@ -177,14 +177,14 @@ class Interfaz(Gtk.Plug):
             GObject.idle_add(self.__run_cucarasims, escenario)
 
         elif valor == 3:
-            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
             self.widgetjuego = CantaBichos()
             self.add(self.widgetjuego)
 
         elif valor == 4:
-            self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+            self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
             escenario = Escenario()
             escenario.modify_bg(
-                Gtk.StateType.NORMAL, Gdk.color_parse("#000000"))
+                Gtk.StateFlags.NORMAL, Gdk.color_parse("#000000"))
             self.widgetjuego = OjosCompuestos(escenario)
             self.add(self.widgetjuego)

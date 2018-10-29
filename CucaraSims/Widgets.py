@@ -45,7 +45,7 @@ class Widget_Leccion(Gtk.Dialog):
             buttons=("Cerrar", Gtk.RESPONSE_ACCEPT))
 
         self.set_decorated(False)
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
         self.set_border_width(15)
 
         self.panel = Panel(lectura)
@@ -76,7 +76,7 @@ class Panel(Gtk.HPaned):
 
         Gtk.HPaned.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         dirpath = False
         if lectura == "ciclo vital":
@@ -127,7 +127,7 @@ class Visor(Gtk.DrawingArea):
 
         Gtk.DrawingArea.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.archivo = archivo
         self.player = False
@@ -200,8 +200,8 @@ class Toolbar(Gtk.EventBox):
 
         toolbar = Gtk.Toolbar()
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
-        toolbar.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
+        toolbar.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
@@ -217,7 +217,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labelcucas = Gtk.Label(" 0H + 0M = 0")
-        self.labelcucas.modify_fg(Gtk.StateType.NORMAL,
+        self.labelcucas.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.labelcucas.show()
         item.add(self.labelcucas)
@@ -237,7 +237,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labelootecas = Gtk.Label(" = 0")
-        self.labelootecas.modify_fg(Gtk.StateType.NORMAL,
+        self.labelootecas.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.labelootecas.show()
         item.add(self.labelootecas)
@@ -254,7 +254,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labelagua = Gtk.Label(" = 0")
-        self.labelagua.modify_fg(Gtk.StateType.NORMAL,
+        self.labelagua.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.labelagua.show()
         item.add(self.labelagua)
@@ -273,7 +273,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labelalimento = Gtk.Label(" = 0")
-        self.labelalimento.modify_fg(Gtk.StateType.NORMAL,
+        self.labelalimento.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.labelalimento.show()
         item.add(self.labelalimento)
@@ -283,7 +283,7 @@ class Toolbar(Gtk.EventBox):
 
         item = Gtk.ToolItem()
         self.labeltiempo = Gtk.Label(" Años: 0 Dias: 0 Horas: 0")
-        self.labeltiempo.modify_fg(Gtk.StateType.NORMAL,
+        self.labeltiempo.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.labeltiempo.show()
         item.add(self.labeltiempo)
@@ -314,14 +314,14 @@ class ToolbarEstado(Gtk.EventBox):
 
         toolbar = Gtk.Toolbar()
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
-        toolbar.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
+        toolbar.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         toolbar.insert(get_separador(draw=False, ancho=3, expand=False), -1)
 
         item = Gtk.ToolItem()
         self.label = Gtk.Label()
-        self.label.modify_fg(Gtk.StateType.NORMAL,
+        self.label.modify_fg(Gtk.StateFlags.NORMAL,
             Gdk.color_parse("#000000"))
         self.label.show()
         item.add(self.label)
@@ -358,7 +358,7 @@ class ControlVolumen(Gtk.VolumeButton):
 
         Gtk.VolumeButton.__init__(self)
 
-        self.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("#ffffff"))
+        self.modify_bg(Gtk.StateFlags.NORMAL, Gdk.color_parse("#ffffff"))
 
         self.connect("value-changed", self.__value_changed)
         self.show_all()
